@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="WSA-Server.jar">
+    <output-path>$USER_HOME$/Desktop/Dev</output-path>
+    <root id="archive" name="Server.jar">
+      <element id="module-output" name="Server" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../../API/Data/snakeyaml-1.18.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

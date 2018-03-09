@@ -1,6 +1,5 @@
 package fr.paragoumba.ppe.wifisignalanalyzer.client;
 
-import fr.paragoumba.ppe.wifisignalanalyzer.server.Clock;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
@@ -28,44 +27,25 @@ public class WifiSignalDisplayer extends Application {
         Client.connect();
 
         dataPath = getParameters().getNamed().get("dataPath");
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("sample.fxml"));
+        Parent root = fxmlLoader.load();
         Rectangle2D bounds = Screen.getPrimary().getBounds();
 
+        Controller.setController(fxmlLoader.getController());
         primaryStage.setScene(new Scene(root, bounds.getWidth(), bounds.getHeight()));
         primaryStage.getIcons().add(new Image("wifi.png"));
         primaryStage.setFullScreenExitHint("");
         primaryStage.setTitle("WifiSignalAnalyzer");
+        primaryStage.setMaximized(true);
         primaryStage.show();
+
     }
 
     @Override
     public void stop(){
 
-        Client.running = false;
-
-        Clock.halt();
         Client.disconnect();
-
-    }
-
-    public static void getData(ArrayList<HashMap<String, String>> list){
-
-        if (Controller.saveData){
-
-            writeData(list);
-
-        }
-
-        ArrayList<Cell> data = new ArrayList<>();
-
-        for (HashMap<String, String> map : list){
-
-            Cell cell = new Cell(Integer.parseInt(map.get("id")), map.get("address"), map.get("ssid"), Double.parseDouble(map.get("quality")), Double.parseDouble(map.get("frequence")), Integer.parseInt(map.get("level")));
-            data.add(cell);
-
-        }
-
-        System.out.println("Getting data. (" + calculateWatt(data.get(0).getLevel()));
 
     }
 
@@ -84,7 +64,7 @@ public class WifiSignalDisplayer extends Application {
         }
     }
 
-    private static double calculateWatt(double dbm){
+    public static double calculateWatt(double dbm){
 
         /*dbm = 10 * Math.log10(watt) + 30;
         dbm / 10 - 3 = Math.log10(watt);*/
